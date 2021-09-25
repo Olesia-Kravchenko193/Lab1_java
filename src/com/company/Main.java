@@ -10,8 +10,8 @@ import java.time.Period;
 public class Main {
 
     public static void main(String[] args) throws ParseException{
-        //Task1();
-        Task2();
+        Task1();
+        //Task2();
     }
 
     /* Вариант 14
@@ -29,15 +29,23 @@ public class Main {
             Products[] array_1 = new Products[size];
             for (int i = 0; i < size; i++) {
                 array_1[i] = new Products();
-                System.out.print("Введите name: ");
-                array_1[i].name = scanner.nextLine();
+                /*System.out.print("Введите name: ");
+                array_1[i].name = scanner.nextLine();*/
+                do {
+                    System.out.print("Введите название товара:");
+                    array_1[i].name = scanner.nextLine();
+                } while (!array_1[i].name.matches("^[a-zA-Z]+$")); //регулярное выражение
                 System.out.print("Введите кол-во: ");
                 array_1[i].number = scanner.nextInt();
-                System.out.print("Введите цену: ");
-                array_1[i].price = scanner.nextInt();
-                System.out.print("Введите год изготовления: ");
-                array_1[i].year = scanner.nextInt();
+                /*System.out.print("Введите цену: ");
+                array_1[i].price = scanner.nextInt();*/
+                do {
+                    System.out.print("Введите цену:");
+                    array_1[i].price = scanner.nextLine();
+                } while (!array_1[i].price.matches("^[0-9]+$"));
                 scanner.nextLine();
+                System.out.print("Введите год изготовления: ");
+                array_1[i].year = scanner.nextLine();
                 System.out.print("Введите производителя: ");
                 array_1[i].manufacturer = scanner.nextLine();
             }
@@ -89,11 +97,13 @@ public class Main {
 
                 LocalDate date_now = LocalDate.now(); // получаем текущую дату
                 //System.out.println(date_now);
-                System.out.print("Дата приема на работу (dd/MM/yyyy):");
-                array_2[i].date=scanner.nextLine();
+                    do {
+                        System.out.print("Дата приема на работу (dd/MM/yyyy):");
+                        array_2[i].date = scanner.nextLine();
+                    } while (!array_2[i].date.matches("^(0?[1-9]|[12][0-9]|3[01])/(0?[1-9]|1[012])/((19|20)\\d\\d)$"));
                 Date DATE_1=new SimpleDateFormat("dd/MM/yyyy").parse(array_2[i].date);
                 LocalDate date = DATE_1.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-                Period periodYear=Period.between(date,date_now); //считает расницу годов
+                Period periodYear=Period.between(date,date_now); //считает разницу годов
                 arrayYear[i]=periodYear.getYears(); //записывает в массив все разницы
             }
             for (int i = 0; i < size; i++) {
