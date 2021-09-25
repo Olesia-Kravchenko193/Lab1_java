@@ -1,4 +1,5 @@
 package com.company;
+import java.text.ParseException;
 import java.util.Scanner;
 import java.time.LocalDate;
 import java.text.SimpleDateFormat;
@@ -8,9 +9,9 @@ import java.time.Period;
 
 public class Main {
 
-    public static void main(String[] args) {
-        Task1();
-        /*Task2();*/
+    public static void main(String[] args) throws ParseException{
+        //Task1();
+        Task2();
     }
 
     /* Вариант 14
@@ -61,7 +62,7 @@ public class Main {
         /* Вариант 14
          Вывести все сведения о сотрудниках, стаж которых
          превышает 10 лет.*/
-        public static void Task2() {
+        public static void Task2() throws ParseException {
 
             Scanner scanner = new Scanner(System.in);
             int size;
@@ -72,8 +73,6 @@ public class Main {
             } while (size <= 0);
             Employee[] array_2 = new Employee[size];
             int []arrayYear=new int[size];
-            double[] arraySPEED = new double[size];
-            double[] arrayTIMES = new double[size];
 
             for (int i = 0; i < size; i++) {
                 array_2[i] = new Employee();
@@ -85,31 +84,29 @@ public class Main {
                 array_2[i].patronymic = scanner.nextLine();
                 System.out.print("Должность: ");
                 array_2[i].position = scanner.nextLine();
-                scanner.nextLine();
                 System.out.print("Пол: ");
                 array_2[i].gender = scanner.nextLine();
 
-                LocalDate date = LocalDate.now(); // получаем текущую дату
-                System.out.println(date);
-                arraySPEED[i] = (array_2[i].date / arrayTIMES[i]);
-                System.out.print("Дата приема на работу: ");
-                array_2[i].date=scanner.nextInt();
+                LocalDate date_now = LocalDate.now(); // получаем текущую дату
+                //System.out.println(date_now);
+                System.out.print("Дата приема на работу (dd/MM/yyyy):");
+                array_2[i].date=scanner.nextLine();
                 Date DATE_1=new SimpleDateFormat("dd/MM/yyyy").parse(array_2[i].date);
-                LocalDate date11 = DATE_1.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-                Period periodYear=Period.between(date11,date);
-                arrayYear[i]=periodYear.getYears();
-                /*System.out.print("Дата приема на работу: ");
-                array_2[i].date = scanner.nextInt();*/
-
+                LocalDate date = DATE_1.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+                Period periodYear=Period.between(date,date_now); //считает расницу годов
+                arrayYear[i]=periodYear.getYears(); //записывает в массив все разницы
             }
-
-
-            /*System.out.print("Название:" + array_1[max].name);
-            System.out.print("Кол-во:" + array_1[max].number);
-            System.out.print("Цена:" + array_1[max].price);
-            System.out.print("Год изготовления:" + array_1[max].year);
-            System.out.print("Производитель:" + array_1[max].manufacturer);*/
+            for (int i = 0; i < size; i++) {
+                if(arrayYear[i] > 10)
+                {
+                    System.out.print("\nФамилия:" + array_2[i].surname);
+                    System.out.print("\nИмя:" +  array_2[i].name);
+                    System.out.print("\nОтчество:" +  array_2[i].patronymic);
+                    System.out.print("\nДолжность:" +  array_2[i].position);
+                    System.out.print("\nПол:" +  array_2[i].gender);
+                    System.out.print("\nДата приема на работу:" +  array_2[i].date);
+                }
+            }
         }
-
 }
 
