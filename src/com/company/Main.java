@@ -1,17 +1,17 @@
 package com.company;
-import java.text.ParseException;
-import java.util.Scanner;
-import java.time.LocalDate;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.time.ZoneId;
-import java.time.Period;
+import java.text.ParseException; //сигнализирует об ошибке при анализе даты
+import java.util.Scanner; //ввод и вывод данных
+import java.time.LocalDate; //для взаемодействя с датой
+import java.text.SimpleDateFormat; //для форматирования даты
+import java.util.Date; //для работы с текущей датой
+import java.time.ZoneId;//определяет временную зону
+import java.time.Period; // описание календарной длительности (периода)
 
 public class Main {
 
     public static void main(String[] args) throws ParseException{
-        Task1();
-        //Task2();
+        //Task1();
+        Task2();
     }
 
     /* Вариант 14
@@ -26,50 +26,32 @@ public class Main {
                 size = scanner.nextInt();
                 scanner.nextLine();
             } while (size <= 0);
-            Products[] array_1 = new Products[size];
+            Product[] products = new Product[size];
             for (int i = 0; i < size; i++) {
-                array_1[i] = new Products();
-                /*System.out.print("Введите name: ");
-                array_1[i].name = scanner.nextLine();*/
+                products[i] = new Product();
                 do {
                     System.out.print("Введите название товара:");
-                    array_1[i].name = scanner.nextLine();
-                } while (!array_1[i].name.matches("^[a-zA-Z]+$")); //регулярное выражение
+                    products[i].setName(scanner.nextLine());
+                } while (!products[i].getName().matches("^[a-zA-Z]+$")); //регулярное выражение
                 System.out.print("Введите кол-во: ");
-                array_1[i].number = scanner.nextInt();
-                /*System.out.print("Введите цену: ");
-                array_1[i].price = scanner.nextInt();*/
+                products[i].setNumber(scanner.nextInt());
+                scanner.nextLine();
                 do {
                     System.out.print("Введите цену:");
-                    array_1[i].price = scanner.nextLine();
-                } while (!array_1[i].price.matches("^[0-9]+$"));
-                scanner.nextLine();
+                    products[i].setPrice(scanner.nextLine());
+                } while (!products[i].getPrice().matches("^[0-9]+$"));
                 System.out.print("Введите год изготовления: ");
-                array_1[i].year = scanner.nextLine();
+                products[i].setYear(scanner.nextLine());
                 System.out.print("Введите производителя: ");
-                array_1[i].manufacturer = scanner.nextLine();
+                products[i].setManufacturer(scanner.nextLine());
             }
-            int max = 0;
-            int max_number = 0;
-            for (int i = 0; i < size - 1; i++) {
-                if (array_1[i].number > array_1[i + 1].number) {
-                    max_number = array_1[i].number;
-                    max = i;
-                } else {
-                    max_number = array_1[i + 1].number;
-                    max = i + 1;
-                }
-            }
-            System.out.print("\nНазвание:" + array_1[max].name);
-            System.out.print("\nКол-во:" + array_1[max].number);
-            System.out.print("\nЦена:" + array_1[max].price);
-            System.out.print("\nГод изготовления:" + array_1[max].year);
-            System.out.print("\nПроизводитель:" + array_1[max].manufacturer);
+            int max = Product.getMax(size, products);
+            System.out.println(products[max]);
         }
 
-        /* Вариант 14
-         Вывести все сведения о сотрудниках, стаж которых
-         превышает 10 лет.*/
+    /* Вариант 14
+     Вывести все сведения о сотрудниках, стаж которых
+     превышает 10 лет.*/
         public static void Task2() throws ParseException {
 
             Scanner scanner = new Scanner(System.in);
@@ -85,23 +67,23 @@ public class Main {
             for (int i = 0; i < size; i++) {
                 array_2[i] = new Employee();
                 System.out.print("Фамилия: ");
-                array_2[i].surname = scanner.nextLine();
+                array_2[i].setSurname(scanner.nextLine());
                 System.out.print("Имя: ");
-                array_2[i].name = scanner.nextLine();
+                array_2[i].setName(scanner.nextLine());
                 System.out.print("Отчество: ");
-                array_2[i].patronymic = scanner.nextLine();
+                array_2[i].setPatronymic(scanner.nextLine());
                 System.out.print("Должность: ");
-                array_2[i].position = scanner.nextLine();
+                array_2[i].setPosition(scanner.nextLine());
                 System.out.print("Пол: ");
-                array_2[i].gender = scanner.nextLine();
+                array_2[i].setGender(scanner.nextLine());
 
                 LocalDate date_now = LocalDate.now(); // получаем текущую дату
                 //System.out.println(date_now);
                     do {
                         System.out.print("Дата приема на работу (dd/MM/yyyy):");
-                        array_2[i].date = scanner.nextLine();
-                    } while (!array_2[i].date.matches("^(0?[1-9]|[12][0-9]|3[01])/(0?[1-9]|1[012])/((19|20)\\d\\d)$"));
-                Date DATE_1=new SimpleDateFormat("dd/MM/yyyy").parse(array_2[i].date);
+                        array_2[i].setDate(scanner.nextLine());
+                    } while (!array_2[i].getDate().matches("^(0?[1-9]|[12][0-9]|3[01])/(0?[1-9]|1[012])/((19|20)\\d\\d)$")); //регуляторное выражение
+                Date DATE_1=new SimpleDateFormat("dd/MM/yyyy").parse(array_2[i].getDate());
                 LocalDate date = DATE_1.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
                 Period periodYear=Period.between(date,date_now); //считает разницу годов
                 arrayYear[i]=periodYear.getYears(); //записывает в массив все разницы
@@ -109,12 +91,7 @@ public class Main {
             for (int i = 0; i < size; i++) {
                 if(arrayYear[i] > 10)
                 {
-                    System.out.print("\nФамилия:" + array_2[i].surname);
-                    System.out.print("\nИмя:" +  array_2[i].name);
-                    System.out.print("\nОтчество:" +  array_2[i].patronymic);
-                    System.out.print("\nДолжность:" +  array_2[i].position);
-                    System.out.print("\nПол:" +  array_2[i].gender);
-                    System.out.print("\nДата приема на работу:" +  array_2[i].date);
+                    System.out.println(array_2[i].toString());
                 }
             }
         }
